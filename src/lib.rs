@@ -79,6 +79,27 @@ fn mean(arr:&mut Vec<f64>)->f64 {
    }
     c/len
 }
+fn exceptZero(arr:&mut Vec<f64>)->f64{
+   let len=arr.len() as f64;
+   let d:usize=len as usize;
+   let mut i:usize=0;
+   let mut c:f64=0.0;
+   for j in 0..d{
+      if(arr[j]==0.0)
+      {
+        i=i+1;
+      }
+      c=c+arr[j];
+   }
+   let f=(d-i) as f64;
+   if i==d{
+   return 0.0;
+   }
+   else{
+     c/f
+   }  
+}
+
 
 #[no_mangle]
 fn prepare_impl(input: Input) {
@@ -114,7 +135,7 @@ fn execute_impl(_input: Input) -> Result {
        }     
        let mut median_prices = vec![0f64; _input.symbols.len()];
        for (idx,price) in prices.iter().enumerate(){
-         median_prices[idx]=mean(&mut price.to_vec());
+         median_prices[idx]=exceptZero(&mut price.to_vec());
        }
        _exchange_medians = Some(median_prices);
      }
