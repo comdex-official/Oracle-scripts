@@ -1,46 +1,51 @@
+#!/usr/bin/env python3
 import requests
 import sys
 
 # URL to fetch historical data for a specific token using osmosis api
-URL = "https://api-osmosis.imperator.co/tokens/v2/historical/{}/chart"
-# Allowed tf values in api
-tf_vals = [5,15,30,60,120,240,720,1440,10080,43800]
-# Num of vals to retrieve. 6 represents half hour for 5 min intervals.
-NUM_VALS = 6
+URL = "https://api-osmosis.imperator.co/tokens/v2/historical/{}/chart?tf=5"
+HEADER = { "Accept": "application/json"}
 
-def get_historical_price(symbol, tf):
-    if int(tf) not in tf_vals:
-        raise Exception(f"Invalid value: {tf=}. Valid values: {tf_vals}")
-    # Add symbol to URL
-    url = URL.format(symbol)
-    # Time frequency, eg 5(min).
-    parameters = {"tf": tf}
-    # Request data
-    r = requests.get(url, params=parameters)
-    if r.status_code != 200:
-        raise Exception(f"Unable to fetch price. Provided args:{symbol=}, {tf=}.")
-    return r.json()
+def get_historical_price(symbols):
+    prices = []
+    for symbol in symbols:
+        # Add symbol to URL
+        url = URL.format(symbol)
+        # Request data
+        req = requests.get(url, headers=HEADER)
+        if req.status_code != 200:
+            raise Exception(f"Unable to fetch price: {symbol=}")
+        prices.append(list(map(lambda x: x['close'], req.json()[-6:])))
+    return prices
+
+def median(prices):
+    prices.sort()
+    length = len(prices)
+    mid = length//2
+    if length % 2 == 1:
+        val = prices[mid]
+    else:
+        val = (prices[mid] + prices[mid+1])/2
+    return round(val, 6)
 
 def main(args):
     length = len(args)
     if length == 0:
-        raise Exception("Insufficient arguments were provided.")
-    elif length > 2:
-        raise Exception("Extra arguments were provided.")
-    
+        raise Exception("Insufficient arguments were provided")
+    elif length > 1:
+        raise Exception("Extra arguments were provided")
+    symbols = args[0].split(',')
     # Get the historical price
-    if length == 2:
-        prices = get_historical_price(args[0], args[1])
-    else:
-        prices = get_historical_price(args[0], 5)
+    tokens_prices = get_historical_price(symbols)
     
     # Retrieve the last 6 values, corresponding to last half hour if tf is 5min.
     result = []
-    for price in prices[-6:]:
-        result.append(round(price['close'], 6))
+    for token_prices in tokens_prices:
+        # Calculate median prices
+        result.append(median(token_prices))
 
-    # Return prices for the last half hour.
-    return result
+    # Return median prices
+    return ",".join(map(str, result))
 
 if __name__ == "__main__":
     try:
