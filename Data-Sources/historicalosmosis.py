@@ -1,32 +1,49 @@
 #!/usr/bin/env python3
 import requests
 import sys
+import json
 
-# URL to fetch historical data for a specific token using osmosis api
-URL = "https://api-osmosis.imperator.co/tokens/v2/historical/{}/chart?tf=5"
-HEADER = { "Accept": "application/json"}
+def get_price_osmosis(symbols):
+    symbols = symbols.split(",")
+    # URL to retrieve the price of all tokens
+    URL = "https://api-osmosis.imperator.co/tokens/v2/all"
+    HEADER = {
+        "Accept": "application/json"
+    }
+    # Request prices of all tokens from API and extract the prices for the
+    # requested symbols.
+    prices = {}
+    for item in requests.get(URL, headers=HEADER).json():
+        # If the item symbol is one of requested, then store the result
+        if item["symbol"] in symbols:
+            prices[item["symbol"]] = item["price"]
+    return [prices[symbol] for symbol in symbols]
 
-def get_historical_price(symbols):
-    prices = []
-    for symbol in symbols:
-        # Add symbol to URL
-        url = URL.format(symbol)
-        # Request data
-        req = requests.get(url, headers=HEADER)
-        if req.status_code != 200:
-            raise Exception(f"Unable to fetch price: {symbol=}")
-        prices.append(list(map(lambda x: x['close'], req.json()[-6:])))
-    return prices
+def get_price_coinmarket(symbols):
+    # URL to retrieve the ID of each token
+    URL = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/map"
+    HEADER = {
+        "Accept": "application/json",
+        "X-CMC_PRO_API_KEY": "83ae2f96-8f84-4dc7-9422-5ea5fb065195"
+    }
+    parameters = {"symbol":symbols}
+    # Request ID from API
+    id_map = requests.get(URL, headers=HEADER, params=parameters)
+    if id_map.status_code != 200:
+        raise Exception("Failed to get price from CoinMarketCap")
+    # Retrieve IDs
+    with open("coinmarketcap.json", "w+") as fp:
+        json.dump(id_map.json(), fp=fp)
+    ids = [str(item["id"]) for item in id_map.json()["data"]]
 
-def median(prices):
-    prices.sort()
-    length = len(prices)
-    mid = length//2
-    if length % 2 == 1:
-        val = prices[mid]
-    else:
-        val = (prices[mid] + prices[mid+1])/2
-    return round(val, 6)
+    # Request price from API
+    URL = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
+    parameters = {"id":",".join(ids), "convert":"USD"}
+    prices = requests.get(URL, headers=HEADER, params=parameters)
+    # Retrieve price
+    with open("coinmarketcap.json", "w+") as fp:
+        json.dump(prices.json()["data"], fp)
+    return [value["quote"]["USD"]["price"] for _,value in prices.json()["data"].items()]
 
 def main(args):
     length = len(args)
@@ -34,15 +51,10 @@ def main(args):
         raise Exception("Insufficient arguments were provided")
     elif length > 1:
         raise Exception("Extra arguments were provided")
-    symbols = args[0].split(',')
     # Get the historical price
-    tokens_prices = get_historical_price(symbols)
     
-    # Retrieve the last 6 values, corresponding to last half hour if tf is 5min.
-    result = []
-    for token_prices in tokens_prices:
-        # Calculate median prices
-        result.append(median(token_prices))
+    result = get_price_osmosis(args[0])
+    
 
     # Return median prices
     return ",".join(map(str, result))
