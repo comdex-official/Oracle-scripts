@@ -104,9 +104,9 @@ def main(args):
     return "\n".join(result)
 
 if __name__ == "__main__":
-    print(main(sys.argv[1:]))
-    # try:
-    #     print(main(sys.argv[1:]))
-    # except Exception as e:
-    #     print(e, file=sys.stderr)
-    #     sys.exit(1)
+    # print(main(sys.argv[1:]))
+    try:
+        print(main(sys.argv[1:]))
+    except Exception as e:
+        print(e, file=sys.stderr)
+        sys.exit(1)
