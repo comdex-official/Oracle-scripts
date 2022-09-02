@@ -6,7 +6,6 @@ import json
 def get_price_osmosis(symbols):
     print("Getting price from Osmosis..")
     symbols = symbols.split(",")
-    symbols.reverse()
     # URL to retrieve the price of all tokens
     URL = "https://api-osmosis.imperator.co/tokens/v2/all"
     HEADER = {
@@ -38,19 +37,23 @@ def get_price_coinmarket(symbols):
     # Request ID from API
     id_map = requests.get(URL, headers=HEADER, params=parameters)
     if id_map.status_code != 200:
-        print(id_map.raise_for_status())
         raise Exception("Failed to get price from CoinMarketCap", id_map.status_code, id_map.reason)
     # Retrieve IDs
     ids = [str(item["id"]) for item in id_map.json()["data"]]
     if atom:
         ids.append("3794")
+        symbols.append("ATOM")
 
     # Request price from API
     URL = "https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest"
     parameters = {"id":",".join(ids), "convert":"USD"}
     result = requests.get(URL, headers=HEADER, params=parameters)
     # Retrieve price
-    return [value["quote"]["USD"]["price"] for _,value in result.json()["data"].items()]
+    # prices =  [value["quote"]["USD"]["price"] for _,value in result.json()["data"].items()]
+    prices = {}
+    for key, value in result.json()["data"].items():
+        prices[value["symbol"]] = value["quote"]["USD"]["price"]
+    return [prices[symbol] for symbol in symbols]
 
 def get_price_coingecko(symbols):
     print("Getting price from CoinGecko..")
@@ -73,17 +76,14 @@ def get_price_coingecko(symbols):
         "vs_currencies":"usd"
     }
     result = requests.get(URL, params=parameters, headers=HEADER).json()
-    # with open("coingecko.json", "w+") as fp:
-    #     json.dump(result, fp)
-    prices = []
+    prices = {}
     for symbol in lc_symbols:
         id = ids.get(symbol, None)
         if id:
-            prices.append(result[id]["usd"])
+            prices[symbol] = result[id]["usd"]
         else:
-            prices.append(0)
-    return prices[::-1]
-    # return [result[symbol]["usd"] for symbol in ids]
+            prices[symbol] = 0
+    return [prices[symbol] for symbol in lc_symbols]
 
 def main(args):
     length = len(args)
@@ -104,8 +104,9 @@ def main(args):
     return "\n".join(result)
 
 if __name__ == "__main__":
-    try:
-        print(main(sys.argv[1:]))
-    except Exception as e:
-        print(e, file=sys.stderr)
-        sys.exit(1)
+    print(main(sys.argv[1:]))
+    # try:
+    #     print(main(sys.argv[1:]))
+    # except Exception as e:
+    #     print(e, file=sys.stderr)
+    #     sys.exit(1)
