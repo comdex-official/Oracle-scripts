@@ -12,7 +12,7 @@ struct Output {
     rates: Vec<u64>,
 }
 
-const DATA_SOURCE_ID: [i64; 1] = [402];
+const DATA_SOURCE_ID: [i64; 1] = [504];
 const EXTERNAL_ID: [i64; 1] = [0];
 
 #[no_mangle]
