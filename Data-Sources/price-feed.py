@@ -3,13 +3,14 @@ from unittest import result
 import requests
 import json
 import sys
+from pprint import pprint
 
 CONSTANTS = {
-    "OSMOSIS" : {
+    "OSMOSIS": {
         "SYMBOLS": {},
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
-    "COIN_GECKO" : {
+    "COIN_GECKO": {
         "SYMBOLS": {
             "ATOM": "cosmos",
             "OSMO": "osmosis",
@@ -36,98 +37,114 @@ CONSTANTS = {
             "BAND": "band-protocol",
             "CMDX": "comdex",
             "TICK": "microtick",
-            "MED" : "medibloc",
+            "MED": "medibloc",
             "CHEQ": "cheqd-network",
             "STARS": "stargaze",
             "HUAHUA": "chihuahua-token",
-            "LUM"  : "lum-network",
-            "VDL"  : "vidulum",
-            "DSM"  : "desmos",
+            "LUM": "lum-network",
+            "VDL": "vidulum",
+            "DSM": "desmos",
+            "BTC": "bitcoin",
+            "WBTC": "wrapped-bitcoin",
+            "ETH": "ethereum",
+            "WETH": "weth",
+            "USDC": "usd-coin",
+            "DAI": "dai",
         },
-        "URL" : "https://api.coingecko.com/api/v3/simple/price?ids={COMMA_SEPRATED_IDS}&vs_currencies=USD"
+        "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
 }
 
-def getPriceFromCoinGecko(symbols):
-    if not symbols:
-        return []
-    
-    symbolsLen = len(symbols)
-    valid_coin_gecko_ids = []
-    for symbol in symbols:
-        if CONSTANTS["COIN_GECKO"]["SYMBOLS"].get(symbol):
-            valid_coin_gecko_ids.append(CONSTANTS["COIN_GECKO"]["SYMBOLS"][symbol])
-    
-    if not valid_coin_gecko_ids:
-        return [0 for i in range(symbolsLen)]
+
+def get_price_coingecko(symbols):
+    # Set a header for api
+    HEADER = {
+        "Accept": "application/json",
+    }
+
+    # Get ids for supplied symbols
+    coin_ids = {symbol: CONSTANTS["COIN_GECKO"]
+                ["SYMBOLS"].get(symbol, symbol) for symbol in symbols}
+
+    PARAMETERS = {
+        "ids": ",".join(coin_ids.values()),
+        "vs_currencies": "usd",
+        "precision": "full",
+    }
 
     result = []
-    url = CONSTANTS["COIN_GECKO"]["URL"].format(COMMA_SEPRATED_IDS=",".join(valid_coin_gecko_ids))
+    url = CONSTANTS["COIN_GECKO"]["URL"]
     try:
-        resp = requests.get(url)
-        if resp.status_code != 200:
-            return [0 for i in range(symbolsLen)]
-        resp = resp.json()
+        # Make api call
+        response = requests.get(url, params=PARAMETERS, headers=HEADER).json()
+        # Retrieve prices from response
         for symbol in symbols:
-            if CONSTANTS["COIN_GECKO"]["SYMBOLS"].get(symbol):
-                if resp.get(CONSTANTS["COIN_GECKO"]["SYMBOLS"][symbol]):
-                    result.append(resp[CONSTANTS["COIN_GECKO"]["SYMBOLS"][symbol]]["usd"])
-                else:
-                    result.append(0)
-            else:
-                result.append(0)
+            coin_id = coin_ids.get(symbol, None)
+            result.append(response[coin_id]["usd"] if coin_id else 0.0)
+        # Return prices
+        return result
     except Exception as e:
-        return [0 for i in range(symbolsLen)]
-    return result
+        return [0.0]*len(symbols)
 
-def getPriceFromOsmosis(symbols):
-    if not symbols:
-        return []
 
-    symbolsLen = len(symbols)
+def get_price_osmosis(symbols):
+    # URL to retrieve the price of all tokens
+    URL = "https://api-osmosis.imperator.co/tokens/v2/all"
+    HEADER = {
+        "Accept": "application/json"
+    }
+    # Request prices of all tokens from API and retrieve the prices for
+    # requested tokens. Return 0, if the request fails.
+    prices = {}
     try:
-        resp = requests.get(CONSTANTS["OSMOSIS"]["URL"])
-        if resp.status_code == 200:
-            allAssetsList = resp.json()
-            symbolPriceMap = {}
-            for asset in allAssetsList:
-                # skipping prices of gravity bridge assets
-                if ".grv" not in asset["symbol"]:
-                    symbolPriceMap[asset["symbol"]] = round(asset["price"], 6)
-            result = []
-            for symbol in symbols:
-                result.append(symbolPriceMap.get(symbol, 0))
-            return result
-        return [0 for i in range(symbolsLen)]
+        response = requests.get(URL, headers=HEADER).json()
+        for item in response:
+            prices[item["symbol"]] = item["price"]
+        result = [prices.get(symbol, 0.0) for symbol in symbols]
+        return result
     except Exception as e:
-        return [0 for i in range(symbolsLen)]
+        print(e)
+        return [0.0]*len(symbols)
+
 
 def get_cmst_price():
     URL = "https://testnet-stat.comdex.one/cmst/price"
     HEADER = {
-        "Accept":"application/json",
-        "User-agent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
+        "Accept": "application/json",
+        "User-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
     }
     try:
         result = requests.get(URL, headers=HEADER).json()
-        # print(result.text)
         return result['data']['cmst_price']
     except Exception as e:
-        print(e)
         return 0.0
 
+
 def main(symbols):
-    # skipping prices from coin gecko because of rate limit
-    # priceList = getPriceFromCoinGecko(symbols)
-    cmst = None
+    if len(symbols) == 0:
+        return 0.0
+
+    # Get CMST price
+    cmst_index = None
     if "CMST" in symbols:
-        cmst = symbols.index("CMST")
-        symbols.pop(cmst)
+        cmst_index = symbols.index("CMST")
+        symbols.pop(cmst_index)
         cmst_price = get_cmst_price()
-    priceList = getPriceFromOsmosis(symbols)
-    if cmst != None:
-        priceList.insert(cmst, cmst_price)
-    return ",".join(str(price) for price in priceList)
+
+    # Get price from coin gecko
+    result_coingecko = get_price_coingecko(symbols)
+    # Get price from osmosis
+    result_osmosis = get_price_osmosis(symbols)
+
+    result = []
+    for item in zip(result_coingecko, result_osmosis):
+        result.append(sum(item)/2)
+
+    # Insert cmst price in same order as requested symbols
+    if cmst_index is not None:
+        result.insert(cmst_index, cmst_price)
+    return ",".join(str(price) for price in result)
+
 
 if __name__ == "__main__":
     try:
