@@ -103,7 +103,6 @@ def get_price_osmosis(symbols):
         result = [prices.get(symbol, 0.0) for symbol in symbols]
         return result
     except Exception as e:
-        print(e)
         return [0.0]*len(symbols)
 
 
