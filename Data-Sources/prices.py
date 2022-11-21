@@ -138,7 +138,7 @@ def get_price_osmosis(symbols):
         return [0 for i in range(len(symbols))]
 
 def get_price_cswap(symbol):
-    URL = f"https://stat.comdex.one/api/v2/cswap/tokens/{symbol}"
+    URL = f"https://testnet-stat.comdex.one/api/v2/cswap/tokens/{symbol}"
     HEADER = {
         "Accept": "application/json",
         "User-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:105.0) Gecko/20100101 Firefox/105.0"
