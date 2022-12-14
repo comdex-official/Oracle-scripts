@@ -33,6 +33,7 @@ CONSTANTS = {
             "GRVUSDC": "USDC.grv",
             "GRVUSDT": "USDT.grv",
             "GRVDAI": "DAI.grv",
+            "STATOM": "stATOM",
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
@@ -64,6 +65,7 @@ CONSTANTS = {
             "GRVUSDC": "gravity-bridge-usdc",
             "GRVUSDT": "gravity-bridge-tether",
             "GRVDAI": "gravity-bridge-dai",
+            "STATOM": "stride-staked-atom",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
