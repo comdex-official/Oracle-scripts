@@ -29,10 +29,12 @@ CONSTANTS = {
             "AXLUSDC": "USDC",
             "AXLUSDT": "USDT",
             "AXLDAI": "DAI",
-            "GRVWETH": "WETH.grv",
-            "GRVUSDC": "USDC.grv",
-            "GRVUSDT": "USDT.grv",
-            "GRVDAI": "DAI.grv",
+            "GWETH": "WETH.grv",
+            "GUSDC": "USDC.grv",
+            "GUSDT": "USDT.grv",
+            "WMATIC": "WMATIC",
+            "AXLWBNB": "WBNB",
+            "EVMOS": "EVMOS",
             "STATOM": "stATOM",
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
@@ -60,11 +62,14 @@ CONSTANTS = {
             "WETH": "axlweth",
             "AXLUSDC": "axlusdc",
             "AXLDAI": "dai",
-            "GRVWBTC": "gravity-bridge-wbtc",
-            "GRVWETH": "gravity-bridge-weth",
-            "GRVUSDC": "gravity-bridge-usdc",
-            "GRVUSDT": "gravity-bridge-tether",
-            "GRVDAI": "gravity-bridge-dai",
+            "GWBTC": "gravity-bridge-wbtc",
+            "GWETH": "gravity-bridge-weth",
+            "GUSDC": "gravity-bridge-usdc",
+            "GUSDT": "gravity-bridge-tether",
+            "GDAI": "gravity-bridge-dai",
+            "WMATIC": "wmatic",
+            "AXLWBNB": "wbnb",
+            "EVMOS": "evmos",
             "STATOM": "stride-staked-atom",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
@@ -139,6 +144,7 @@ def get_price_osmosis(symbols):
     except Exception as e:
         return [0 for i in range(len(symbols))]
 
+
 def get_price_cswap(symbol):
     URL = f"https://stat.comdex.one/api/v2/cswap/tokens/{symbol}"
     HEADER = {
@@ -193,6 +199,7 @@ def main(symbols):
         return ",".join(str(price) for price in result)
     except Exception:
         return ",".join("0" for i in range(len(symbols)))
+
 
 if __name__ == "__main__":
     try:
