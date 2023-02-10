@@ -36,6 +36,8 @@ CONSTANTS = {
             "AXLWBNB": "WBNB",
             "EVMOS": "EVMOS",
             "STATOM": "stATOM",
+            "STOSMO": "stOSMO",
+            "LUNA": "LUNA",
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
@@ -71,6 +73,9 @@ CONSTANTS = {
             "AXLWBNB": "wbnb",
             "EVMOS": "evmos",
             "STATOM": "stride-staked-atom",
+            "STOSMO": "stride-staked-osmo",
+            "LUNA": "terra-luna-2",
+            "CANTO": "canto",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
