@@ -38,6 +38,8 @@ CONSTANTS = {
             "STATOM": "stATOM",
             "STOSMO": "stOSMO",
             "LUNA": "LUNA",
+            "MNTL": "MNTL",
+            "AXLWFTM": "WFTM"
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
@@ -76,6 +78,8 @@ CONSTANTS = {
             "STOSMO": "stride-staked-osmo",
             "LUNA": "terra-luna-2",
             "CANTO": "canto",
+            "MNTL": "assetmantle",
+            "AXLWFTM": "wrapped-fantom",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
