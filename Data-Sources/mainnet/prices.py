@@ -14,6 +14,7 @@ CONSTANTS = {
             "STARS": "STARS", "HUAHUA": "HUAHUA", "DSM": "DSM", "AXLWBTC": "WBTC", "AXLWETH": "WETH", "AXLUSDC": "USDC",
             "AXLUSDT": "USDT", "AXLDAI": "DAI", "GWETH": "WETH.grv", "GRVUSDC": "USDC.grv", "GUSDT": "USDT.grv", "WMATIC": "WMATIC",
             "AXLWBNB": "WBNB", "EVMOS": "EVMOS", "STATOM": "stATOM", "STOSMO": "stOSMO", "LUNA": "LUNA", "CMST": "CMST",
+            "AXLSHIB": "SHIB", "STKATOM": "STKATOM",
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
@@ -24,7 +25,8 @@ CONSTANTS = {
             "CMDX": "comdex", "STARS": "stargaze", "HUAHUA": "chihuahua-token", "DSM": "desmos", "AXLWBTC": "axlwbtc", "AXLWETH": "axlweth",
             "AXLUSDC": "axlusdc", "AXLDAI": "dai", "GWBTC": "gravity-bridge-wbtc", "GWETH": "gravity-bridge-weth", "GUSDC": "gravity-bridge-usdc", 
             "GUSDT": "gravity-bridge-tether", "GDAI": "gravity-bridge-dai", "WMATIC": "wmatic", "AXLWBNB": "wbnb", "EVMOS": "evmos",
-            "STATOM": "stride-staked-atom", "STOSMO": "stride-staked-osmo", "LUNA": "terra-luna-2", "CANTO": "canto", "CMST": "composite"
+            "STATOM": "stride-staked-atom", "STOSMO": "stride-staked-osmo", "LUNA": "terra-luna-2", "CANTO": "canto", "CMST": "composite",
+            "AXLSHIB": "shiba-inu", "STKATOM": "stkatom",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
