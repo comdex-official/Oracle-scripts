@@ -9,24 +9,24 @@ STAT_URL = "https://stat.comdex.one"
 CONSTANTS = {
     "OSMOSIS": {
         "SYMBOLS": {
-            "ATOM": "ATOM", "OSMO": "OSMO", "SCRT": "SCRT", "AKT": "AKT", "JUNO": "JUNO", "CRO": "CRO", "ION": "ION",
-            "XPRT": "XPRT", "DVPN": "DVPN", "REGEN": "REGEN", "NGM": "NGM", "EEUR": "EEUR", "BAND": "BAND", "CMDX": "CMDX",
-            "STARS": "STARS", "HUAHUA": "HUAHUA", "DSM": "DSM", "AXLWBTC": "WBTC", "AXLWETH": "WETH", "AXLUSDC": "USDC",
-            "AXLUSDT": "USDT", "AXLDAI": "DAI", "GWETH": "WETH.grv", "GRVUSDC": "USDC.grv", "GUSDT": "USDT.grv", "WMATIC": "WMATIC",
-            "AXLWBNB": "WBNB", "EVMOS": "EVMOS", "STATOM": "stATOM", "STOSMO": "stOSMO", "LUNA": "LUNA", "CMST": "CMST",
-            "AXLSHIB": "SHIB", "STKATOM": "STKATOM",
+            "ATOM": "ATOM", "OSMO": "OSMO", "SCRT": "SCRT", "AKT": "AKT", "JUNO": "JUNO", "CRO": "CRO", "ION": "ION", 
+            "XPRT": "XPRT", "DVPN": "DVPN", "REGEN": "REGEN", "NGM": "NGM", "EEUR": "EEUR", "BAND": "BAND", "CMDX": "CMDX", 
+            "STARS": "STARS", "HUAHUA": "HUAHUA", "DSM": "DSM", "AXLWBTC": "WBTC", "WETH": "WETH", "AXLUSDC": "USDC", 
+            "AXLUSDT": "USDT", "AXLDAI": "DAI", "GWETH": "WETH.grv", "GUSDC": "USDC.grv", "GUSDT": "USDT.grv", "WMATIC": "WMATIC", 
+            "AXLWBNB": "WBNB", "EVMOS": "EVMOS", "STATOM": "stATOM", "STOSMO": "stOSMO", "LUNA": "LUNA", "MNTL": "MNTL", "AXLWFTM": "WFTM",
+            "CMST": "CMST", "AXLSHIB": "SHIB", "STKATOM": "STKATOM"
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
     "COIN_GECKO": {
         "SYMBOLS": {
-            "ATOM": "cosmos", "OSMO": "osmosis", "SCRT": "secret", "AKT": "akash-network", "JUNO": "juno-network", "CRO": "crypto-com-chain", 
+            "ATOM": "cosmos", "OSMO": "osmosis", "SCRT": "secret", "AKT": "akash-network", "JUNO": "juno-network", "CRO": "crypto-com-chain",
             "ION": "ion", "XPRT": "persistence", "DVPN": "sentinel", "REGEN": "regen", "NGM": "e-money", "EEUR": "e-money-eur", "BAND": "band-protocol",
-            "CMDX": "comdex", "STARS": "stargaze", "HUAHUA": "chihuahua-token", "DSM": "desmos", "AXLWBTC": "axlwbtc", "AXLWETH": "axlweth",
-            "AXLUSDC": "axlusdc", "AXLDAI": "dai", "GWBTC": "gravity-bridge-wbtc", "GWETH": "gravity-bridge-weth", "GUSDC": "gravity-bridge-usdc", 
+            "CMDX": "comdex", "STARS": "stargaze", "HUAHUA": "chihuahua-token", "DSM": "desmos", "AXLWBTC": "axlwbtc", "WETH": "axlweth",
+            "AXLUSDC": "axlusdc", "AXLDAI": "dai", "GWBTC": "gravity-bridge-wbtc", "GWETH": "gravity-bridge-weth", "GUSDC": "gravity-bridge-usdc",
             "GUSDT": "gravity-bridge-tether", "GDAI": "gravity-bridge-dai", "WMATIC": "wmatic", "AXLWBNB": "wbnb", "EVMOS": "evmos",
-            "STATOM": "stride-staked-atom", "STOSMO": "stride-staked-osmo", "LUNA": "terra-luna-2", "CANTO": "canto", "CMST": "composite",
-            "AXLSHIB": "shiba-inu", "STKATOM": "stkatom",
+            "STATOM": "stride-staked-atom", "STOSMO": "stride-staked-osmo", "LUNA": "terra-luna-2", "CANTO": "canto", "MNTL": "assetmantle", "AXLWFTM": "wrapped-fantom",
+            "CMST": "composite", "AXLSHIB": "shiba-inu", "STKATOM": "stkatom",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
