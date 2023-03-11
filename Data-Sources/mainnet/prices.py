@@ -159,7 +159,6 @@ def main(symbols):
         result = []
         for item in zip(result_coingecko, result_osmosis, result_cswap):
             different_sources_price = list(item)
-            print(different_sources_price)
             non_zero_sources = [price for price in different_sources_price if price != 0]
             if non_zero_sources:
                 mean = sum(non_zero_sources) / len(non_zero_sources)
