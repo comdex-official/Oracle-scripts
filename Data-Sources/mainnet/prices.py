@@ -32,7 +32,11 @@ CONSTANTS = {
     },
     "CSWAP": {
         "SYMBOLS": {
-            "CMST": "CMST", "HARBOR": "HARBOR"
+            "ATOM": "ATOM", "OSMO": "OSMO", "AKT": "AKT", "JUNO": "JUNO",
+            "XPRT": "XPRT", "CMDX": "CMDX", "HUAHUA": "HUAHUA", "AXLWBTC": "AXLWBTC", "WETH": "WETH",
+            "AXLUSDC": "AXLUSDC", "GUSDC": "GUSDC", "WMATIC": "WMATIC", "AXLWBNB": "AXLWBNB", "EVMOS": "EVMOS",
+            "STATOM": "STATOM", "STOSMO": "STOSMO", "LUNA": "LUNA", "CANTO": "CANTO", "MNTL": "MNTL", "AXLWFTM": "AXLWFTM",
+            "CMST": "CMST", "AXLSHIB": "AXLSHIB", "STKATOM": "STKATOM", "HARBOR": "HARBOR"
         },
         "URL": f"{STAT_URL}/api/v2/cswap/tokens/all"
     }
@@ -146,20 +150,21 @@ def main(symbols):
 
     try:
         # Get price from coin gecko
-        result_coingecko = get_price_coingecko(symbols)
+        # result_coingecko = get_price_coingecko(symbols)
 
         # Get price from osmosis
-        result_osmosis = get_price_osmosis(symbols)
+        # result_osmosis = get_price_osmosis(symbols)
 
         # Get price from cswap
         result_cswap = get_price_cswap(symbols)
 
         # if lenghth of the results from all the sources is not same, then return 0
-        if not len(result_coingecko) == len(result_osmosis) == len(result_cswap):
-            return ",".join("0" for i in range(len(symbols)))
+        # if not len(result_coingecko) == len(result_osmosis) == len(result_cswap):
+        #     return ",".join("0" for i in range(len(symbols)))
 
         result = []
-        for item in zip(result_coingecko, result_osmosis, result_cswap):
+        # for item in zip(result_coingecko, result_osmosis, result_cswap):
+        for item in zip(result_cswap):
             different_sources_price = list(item)
             non_zero_sources = [price for price in different_sources_price if price != 0]
             if non_zero_sources:
