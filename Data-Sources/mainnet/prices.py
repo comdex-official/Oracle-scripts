@@ -71,7 +71,7 @@ def get_price_coingecko(symbols):
     result = []
     try:
         # Make api call
-        response = requests.get(url, params=PARAMETERS, headers=HEADER, timeout=1).json()
+        response = requests.get(url, params=PARAMETERS, headers=HEADER, timeout=3).json()
 
         # Retrieve prices from response
         for symbol in symbols:
@@ -100,7 +100,7 @@ def get_price_osmosis(symbols):
     # Request prices of all tokens from API and retrieve the prices for
     # requested tokens. Return 0, if the request fails.
     try:
-        response = requests.get(url, headers=HEADER, timeout=1).json()
+        response = requests.get(url, headers=HEADER, timeout=3).json()
 
         osmosis_symbol_prices_map = {}
         for token in response:
@@ -129,7 +129,7 @@ def get_price_cswap(symbols):
     # Request prices of all tokens from API and retrieve the prices for
     # requested tokens. Return 0, if the request fails.
     try:
-        response = requests.get(url, headers=HEADER, timeout=1).json()
+        response = requests.get(url, headers=HEADER, timeout=3).json()
         
         # return all prices as 0 if API fails or returns error
         if response.get("error"):
