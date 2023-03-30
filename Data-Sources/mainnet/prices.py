@@ -32,7 +32,12 @@ CONSTANTS = {
     },
     "CSWAP": {
         "SYMBOLS": {
-            "CMST": "CMST", "HARBOR": "HARBOR"
+            "ATOM": "ATOM", "OSMO": "OSMO", "AKT": "AKT", "JUNO": "JUNO",
+            "XPRT": "XPRT", "CMDX": "CMDX", "HUAHUA": "HUAHUA", "AXLWBTC": "AXLWBTC", "WETH": "WETH",
+            "AXLUSDC": "AXLUSDC", "GUSDC": "GUSDC", "WMATIC": "WMATIC", "AXLWBNB": "AXLWBNB", "EVMOS": "EVMOS",
+            "STATOM": "STATOM", "STOSMO": "STOSMO", "LUNA": "LUNA", "CANTO": "CANTO", "MNTL": "MNTL", "AXLWFTM": "AXLWFTM",
+            "CMST": "CMST", "AXLSHIB": "AXLSHIB", "STKATOM": "STKATOM", "HARBOR": "HARBOR",
+            "STJUNO": "STJUNO", "STLUNA": "STLUNA",
         },
         "URL": f"{STAT_URL}/api/v2/cswap/tokens/all"
     }
@@ -66,7 +71,7 @@ def get_price_coingecko(symbols):
     result = []
     try:
         # Make api call
-        response = requests.get(url, params=PARAMETERS, headers=HEADER).json()
+        response = requests.get(url, params=PARAMETERS, headers=HEADER, timeout=1).json()
 
         # Retrieve prices from response
         for symbol in symbols:
@@ -95,7 +100,7 @@ def get_price_osmosis(symbols):
     # Request prices of all tokens from API and retrieve the prices for
     # requested tokens. Return 0, if the request fails.
     try:
-        response = requests.get(url, headers=HEADER).json()
+        response = requests.get(url, headers=HEADER, timeout=1).json()
 
         osmosis_symbol_prices_map = {}
         for token in response:
@@ -124,7 +129,7 @@ def get_price_cswap(symbols):
     # Request prices of all tokens from API and retrieve the prices for
     # requested tokens. Return 0, if the request fails.
     try:
-        response = requests.get(url, headers=HEADER).json()
+        response = requests.get(url, headers=HEADER, timeout=1).json()
         
         # return all prices as 0 if API fails or returns error
         if response.get("error"):
