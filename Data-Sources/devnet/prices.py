@@ -4,7 +4,7 @@ import requests
 import json
 import sys
 
-STAT_URL = "https://test-stat.comdex.one"
+STAT_URL = "https://devnet-stat.comdex.one"
 
 CONSTANTS = {
     "OSMOSIS": {
