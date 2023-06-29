@@ -48,6 +48,8 @@ def get_price_coingecko(symbols):
     # Return empty response if no symbols
     if not symbols:
         return []
+    
+    return [0 for i in range(len(symbols))] # Temp FIX, need to be removed later
 
     # Get ids for supplied symbols
     coin_ids_map = {symbol: CONSTANTS["COIN_GECKO"]["SYMBOLS"].get(
