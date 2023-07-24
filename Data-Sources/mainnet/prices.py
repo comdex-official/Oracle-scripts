@@ -32,14 +32,17 @@ CONSTANTS = {
     },
     "CSWAP": {
         "SYMBOLS": {
-            "ATOM": "ATOM", "OSMO": "OSMO", "AKT": "AKT", "JUNO": "JUNO",
-            "XPRT": "XPRT", "CMDX": "CMDX", "HUAHUA": "HUAHUA", "AXLWBTC": "AXLWBTC", "WETH": "WETH",
-            "AXLUSDC": "AXLUSDC", "GUSDC": "GUSDC", "WMATIC": "WMATIC", "AXLWBNB": "AXLWBNB", "EVMOS": "EVMOS",
-            "STATOM": "STATOM", "STOSMO": "STOSMO", "LUNA": "LUNA", "CANTO": "CANTO", "MNTL": "MNTL", "AXLWFTM": "AXLWFTM",
-            "CMST": "CMST", "AXLSHIB": "AXLSHIB", "STKATOM": "STKATOM", "HARBOR": "HARBOR",
-            "STJUNO": "STJUNO", "STLUNA": "STLUNA",
+            "CMDX": "CMDX", "CMST": "CMST", "HARBOR": "HARBOR", "STJUNO": "STJUNO", "STLUNA": "STLUNA",
         },
         "URL": f"{STAT_URL}/api/v2/cswap/tokens/all"
+    },
+    "CRESCENT": {
+        "SYMBOLS": {
+            "ATOM": "ATOM", "AKT": "AKT", "JUNO": "JUNO", "CRO": "CRO", "CMDX": "CMDX", "WETH": "WETH.axl", "AXLUSDC": "USDC.axl", 
+            "GWETH": "WETH.grv", "GUSDC": "USDC.grv", "GUSDT": "USDT.grv", "EVMOS": "EVMOS", "STATOM": "stATOM", "LUNA": "LUNA",
+            "CMST": "CMST", "STKATOM": "stkATOM",
+        },
+        "URL": "https://apigw-v3.crescent.network/asset/live"
     }
 }
 
@@ -147,6 +150,36 @@ def get_price_cswap(symbols):
         return [0 for i in range(len(symbols))]
 
 
+def get_price_crescent(symbols):
+    if not symbols:
+        return []
+    
+    HEADER = {
+        "Accept": "application/json",
+    }
+    
+    try:
+        asset_info_response = requests.get("https://apigw-v3.crescent.network/asset/info", headers=HEADER, timeout=3).json()
+        denom_symbol_map = {}
+        for asset_info in asset_info_response["data"]:
+            denom_symbol_map[asset_info["denom"]] = asset_info["ticker"]
+
+        price_response = requests.get(CONSTANTS["CRESCENT"]["URL"], headers=HEADER, timeout=3).json()
+        denom_price_map = {}
+        for price in price_response["data"]:
+            denom_price_map[price["denom"]] = price["priceOracle"]
+        
+        crescent_symbol_price_map = {}
+        for denom, price in denom_price_map.items():
+            if denom_symbol_map.get(denom):
+                crescent_symbol_price_map[denom_symbol_map[denom]] = price
+
+        return [crescent_symbol_price_map[CONSTANTS["CRESCENT"]["SYMBOLS"][symbol]] if CONSTANTS["CRESCENT"]["SYMBOLS"].get(symbol, None) else 0 for symbol in symbols]
+
+    except Exception as e:
+        return [0 for i in range(len(symbols))]
+    
+
 def main(symbols):
     if len(symbols) == 0:
         return ""
@@ -161,12 +194,15 @@ def main(symbols):
         # Get price from cswap
         result_cswap = get_price_cswap(symbols)
 
+        # Get price from crescent
+        result_crescent = get_price_crescent(symbols)
+
         # if lenghth of the results from all the sources is not same, then return 0
-        if not len(result_coingecko) == len(result_osmosis) == len(result_cswap):
+        if not len(result_coingecko) == len(result_osmosis) == len(result_cswap) == len(result_crescent):
             return ",".join("0" for i in range(len(symbols)))
 
         result = []
-        for item in zip(result_coingecko, result_osmosis, result_cswap):
+        for item in zip(result_coingecko, result_osmosis, result_cswap, result_crescent):
             different_sources_price = list(item)
             non_zero_sources = [price for price in different_sources_price if price != 0]
             if non_zero_sources:
