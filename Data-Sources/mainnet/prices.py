@@ -35,21 +35,7 @@ CONSTANTS = {
             "CMDX": "CMDX", "CMST": "CMST", "HARBOR": "HARBOR", "STJUNO": "STJUNO", "STLUNA": "STLUNA",
         },
         "URL": f"{STAT_URL}/api/v2/cswap/tokens/all"
-    },
-    "CRESCENT": {
-        "SYMBOLS": {
-            "ATOM": "ATOM", "AKT": "AKT", "JUNO": "JUNO", "CRO": "CRO", "CMDX": "CMDX", "WETH": "WETH.axl", "AXLUSDC": "USDC.axl", 
-            "GWETH": "WETH.grv", "GUSDC": "USDC.grv", "GUSDT": "USDT.grv", "EVMOS": "EVMOS", "STATOM": "stATOM", "LUNA": "LUNA",
-            "CMST": "CMST", "STKATOM": "stkATOM",
-        },
-        "URL": "https://apigw-v3.crescent.network/asset/live"
-    },
-    "COINDESK": {
-        "SYMBOLS": {
-            "ATOM": "ATOM", "OSMO": "OSMO", "SCRT": "SCRT","CRO": "CRO", "BAND": "BAND", "AXLWBTC": "WBTC", "LUNA": "LUNA",
-        },
-        "URL": "https://production.api.coindesk.com/v2/tb/price/ticker"
-    },
+    }
 }
 
 
@@ -156,76 +142,6 @@ def get_price_cswap(symbols):
         return [0 for i in range(len(symbols))]
 
 
-def get_price_crescent(symbols):
-    if not symbols:
-        return []
-    
-    HEADER = {
-        "Accept": "application/json",
-    }
-    
-    try:
-        asset_info_response = requests.get("https://apigw-v3.crescent.network/asset/info", headers=HEADER, timeout=3).json()
-        denom_symbol_map = {}
-        for asset_info in asset_info_response["data"]:
-            denom_symbol_map[asset_info["denom"]] = asset_info["ticker"]
-
-        price_response = requests.get(CONSTANTS["CRESCENT"]["URL"], headers=HEADER, timeout=3).json()
-        denom_price_map = {}
-        for price in price_response["data"]:
-            denom_price_map[price["denom"]] = price["priceOracle"]
-        
-        crescent_symbol_price_map = {}
-        for denom, price in denom_price_map.items():
-            if denom_symbol_map.get(denom):
-                crescent_symbol_price_map[denom_symbol_map[denom]] = price
-
-        return [crescent_symbol_price_map[CONSTANTS["CRESCENT"]["SYMBOLS"][symbol]] if CONSTANTS["CRESCENT"]["SYMBOLS"].get(symbol, None) else 0 for symbol in symbols]
-
-    except Exception as e:
-        return [0 for i in range(len(symbols))]
-    
-
-def get_price_coindesk(symbols):
-    if not symbols:
-        return []
-    
-    # Get ids for supplied symbols
-    coin_ids_map = {}
-    for symbol in symbols:
-        if  CONSTANTS["COINDESK"]["SYMBOLS"].get(symbol):
-            coin_ids_map[symbol] =  CONSTANTS["COINDESK"]["SYMBOLS"][symbol]
-        else:
-            pass
-
-    # Set a header for api
-    HEADER = {
-        "Accept": "application/json",
-    }
-
-    # Set request parameters
-    PARAMETERS = {
-        "assets": ",".join(coin_ids_map.values()),
-    }
-
-    # URL to retrieve the price of all tokens
-    url = CONSTANTS["COINDESK"]["URL"]
-
-    result = []
-    try:
-        # Make api call
-        response = requests.get(url, params=PARAMETERS, headers=HEADER, timeout=3).json()
-
-        # Retrieve prices from response
-        for symbol in symbols:
-            coin_id = coin_ids_map.get(symbol, None)
-            result.append(response["data"][coin_id]["ohlc"]["c"] if coin_id and response["data"].get(coin_id) else 0)
-
-        # Return prices
-        return result
-    except Exception as e:
-        return [0 for i in range(len(symbols))]
-
 def main(symbols):
     if len(symbols) == 0:
         return ""
@@ -240,18 +156,12 @@ def main(symbols):
         # Get price from cswap
         result_cswap = get_price_cswap(symbols)
 
-        # Get price from crescent
-        result_crescent = get_price_crescent(symbols)
-
-        # Get price from coindesk
-        result_coindesk = get_price_coindesk(symbols)
-
         # if lenghth of the results from all the sources is not same, then return 0
-        if not len(result_coingecko) == len(result_osmosis) == len(result_cswap) == len(result_crescent) == len(result_coindesk):
+        if not len(result_coingecko) == len(result_osmosis) == len(result_cswap):
             return ",".join("0" for i in range(len(symbols)))
 
         result = []
-        for item in zip(result_coingecko, result_osmosis, result_cswap, result_crescent, result_coindesk):
+        for item in zip(result_coingecko, result_osmosis, result_cswap):
             different_sources_price = list(item)
             non_zero_sources = [price for price in different_sources_price if price != 0]
             if non_zero_sources:
