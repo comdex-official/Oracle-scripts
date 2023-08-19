@@ -14,7 +14,7 @@ CONSTANTS = {
             "STARS": "STARS", "HUAHUA": "HUAHUA", "DSM": "DSM", "AXLWBTC": "WBTC", "WETH": "WETH", "AXLUSDC": "USDC", 
             "AXLUSDT": "USDT", "AXLDAI": "DAI", "GWETH": "WETH.grv", "GUSDC": "USDC.grv", "GUSDT": "USDT.grv", "WMATIC": "WMATIC", 
             "AXLWBNB": "WBNB", "EVMOS": "EVMOS", "STATOM": "stATOM", "STOSMO": "stOSMO", "LUNA": "LUNA", "MNTL": "MNTL", "AXLWFTM": "WFTM",
-            "CMST": "CMST", "AXLSHIB": "SHIB", "STKATOM": "STKATOM"
+            "CMST": "CMST", "STKATOM": "stkATOM"
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
