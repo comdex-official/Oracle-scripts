@@ -103,7 +103,13 @@ def get_price_osmosis(symbols):
         for token in response:
             osmosis_symbol_prices_map[token["symbol"]] = token["price"]
 
-        return [osmosis_symbol_prices_map[CONSTANTS["OSMOSIS"]["SYMBOLS"][symbol]] if CONSTANTS["OSMOSIS"]["SYMBOLS"].get(symbol, None) else 0 for symbol in symbols]
+        result = []
+        for symbol in symbols:
+            try:
+                result.append(osmosis_symbol_prices_map[CONSTANTS["OSMOSIS"]["SYMBOLS"][symbol]])
+            except:
+                result.append(0)
+        return result
 
     except Exception as e:
         return [0 for i in range(len(symbols))]
@@ -135,8 +141,14 @@ def get_price_cswap(symbols):
         cswap_symbol_prices_map = {}
         for token in response["data"]:
             cswap_symbol_prices_map[token["symbol"]] = token["price"]
-
-        return [cswap_symbol_prices_map[CONSTANTS["CSWAP"]["SYMBOLS"][symbol]] if CONSTANTS["CSWAP"]["SYMBOLS"].get(symbol, None) else 0  for symbol in symbols]
+        
+        result = []
+        for symbol in symbols:
+            try:
+                result.append(cswap_symbol_prices_map[CONSTANTS["CSWAP"]["SYMBOLS"][symbol]])
+            except:
+                result.append(0)
+        return result
     
     except Exception as e:
         return [0 for i in range(len(symbols))]
