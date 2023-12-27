@@ -11,7 +11,7 @@ CONSTANTS = {
         "SYMBOLS": {
             "ATOM": "ATOM", "OSMO": "OSMO", "SCRT": "SCRT", "AKT": "AKT", "JUNO": "JUNO", "CRO": "CRO", "ION": "ION", 
             "XPRT": "XPRT", "DVPN": "DVPN", "REGEN": "REGEN", "NGM": "NGM", "EEUR": "EEUR", "BAND": "BAND", "CMDX": "CMDX", 
-            "STARS": "STARS", "HUAHUA": "HUAHUA", "DSM": "DSM", "AXLWBTC": "WBTC", "WETH": "WETH", "AXLUSDC": "USDC.axl", 
+            "STARS": "STARS", "HUAHUA": "HUAHUA", "DSM": "DSM", "AXLWBTC": "WBTC", "WETH": "axlweth", "AXLUSDC": "USDC.axl", 
             "AXLUSDT": "USDT", "AXLDAI": "DAI", "GWETH": "WETH.grv", "GUSDC": "USDC.grv", "GUSDT": "USDT.grv", "WMATIC": "WMATIC", 
             "AXLWBNB": "WBNB", "EVMOS": "EVMOS", "STATOM": "stATOM", "STOSMO": "stOSMO", "LUNA": "LUNA", "MNTL": "MNTL", "AXLWFTM": "WFTM",
             "CMST": "CMST", "STKATOM": "stkATOM"
