@@ -38,6 +38,7 @@ CONSTANTS = {
             "STATOM": "stATOM",
             "STOSMO": "stOSMO",
             "LUNA": "LUNA",
+            "NUSDC": "USDC",
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
@@ -76,6 +77,7 @@ CONSTANTS = {
             "STOSMO": "stride-staked-osmo",
             "LUNA": "terra-luna-2",
             "CANTO": "canto",
+            "NUSDC": "usd-coin",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
