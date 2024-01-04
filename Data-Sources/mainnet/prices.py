@@ -14,7 +14,7 @@ CONSTANTS = {
             "STARS": "STARS", "HUAHUA": "HUAHUA", "DSM": "DSM", "AXLWBTC": "WBTC", "WETH": "ETH", "AXLUSDC": "USDC.axl", 
             "AXLUSDT": "USDT", "AXLDAI": "DAI", "GWETH": "WETH.grv", "GUSDC": "USDC.grv", "GUSDT": "USDT.grv", "WMATIC": "WMATIC", 
             "AXLWBNB": "WBNB", "EVMOS": "EVMOS", "STATOM": "stATOM", "STOSMO": "stOSMO", "LUNA": "LUNA", "MNTL": "MNTL", "AXLWFTM": "WFTM",
-            "CMST": "CMST", "STKATOM": "stkATOM"
+            "CMST": "CMST", "STKATOM": "stkATOM", "NUSDC": "USDC"
         },
         "URL": "https://api-osmosis.imperator.co/tokens/v2/all"
     },
@@ -26,7 +26,7 @@ CONSTANTS = {
             "AXLUSDC": "axlusdc", "AXLDAI": "dai", "GWBTC": "gravity-bridge-wbtc", "GWETH": "gravity-bridge-weth", "GUSDC": "gravity-bridge-usdc",
             "GUSDT": "gravity-bridge-tether", "GDAI": "gravity-bridge-dai", "WMATIC": "wmatic", "AXLWBNB": "wbnb", "EVMOS": "evmos",
             "STATOM": "stride-staked-atom", "STOSMO": "stride-staked-osmo", "LUNA": "terra-luna-2", "CANTO": "canto", "MNTL": "assetmantle", "AXLWFTM": "wrapped-fantom",
-            "CMST": "composite", "AXLSHIB": "shiba-inu", "STKATOM": "stkatom",
+            "CMST": "composite", "AXLSHIB": "shiba-inu", "STKATOM": "stkatom", "NUSDC": "usd-coin",
         },
         "URL": "https://api.coingecko.com/api/v3/simple/price"
     },
