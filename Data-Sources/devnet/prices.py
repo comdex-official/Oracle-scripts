@@ -32,7 +32,7 @@ CONSTANTS = {
     },
     "CSWAP": {
         "SYMBOLS": {
-            "CMST": "CMST", "HARBOR": "HARBOR", "STOSMO": "STOSMO"
+            "CMST": "CMST", "HARBOR": "HARBOR"
         },
         "URL": f"{STAT_URL}/api/v2/cswap/tokens/all"
     }
